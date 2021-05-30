@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,21 +43,43 @@
   </fieldset>
 
   <section id="error-btns">
-    <button>Console Log Demo</button>
-    <button>Console Error Demo</button>
-    <button>Console Dir</button>
-    <button>Console dirxml</button>
-    <button>Console Group Start</button>
-    <button>Console Group End</button>
-    <button>Console Table</button>
-    <button>Start Timer</button>
-    <button>End Timer</button>
-    <button>Console Trace</button>
-    <button>Trigger a Global Error</button>
+    <button id ='log-demo'>Console Log Demo</button>
+    <button id ='error-demo'>Console Error Demo</button>
+    <button id ='console-dir'>Console Dir</button>
+    <button id ='console-dirxml'>Console dirxml</button>
+    <button id='group-start'>Console Group Start</button>
+    <button id='group-end'>Console Group End</button>
+    <button id='table'>Console Table</button>
+    <button id='start-timer'>Start Timer</button>
+    <button id='end-timer'>End Timer</button>
+    <button id='Trace'>Console Trace</button>
+    <button id='global-error'>Trigger a Global Error</button>
   </section>
+
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "ee66c928c2954c388818b5127684ba2e"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                       
 
   <script>
     let calculateBtn = document.querySelector('#calculate');
+    let logdemo = document.querySelector('#log-demo');
+    let errordemo = document.querySelector('#error-demo');
+    let dir = document.querySelector('#console-dir');
+    let dirxml = document.querySelector('#console-dirxml');
+    let gstart = document.querySelector('#group-start');
+    let gend = document.querySelector('#group-end');
+    let table = document.querySelector('#table');
+    let stimer = document.querySelector('#start-timer');
+    let etimer = document.querySelector('#end-timer');
+    let trace = document.querySelector('#Trace');
+    let gerror = document.querySelector('#global-error');
+    
+    
     calculateBtn.addEventListener('click', () => {
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
@@ -65,8 +88,101 @@
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
     });
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-    // TODO - Make buttons functional
+    logdemo.addEventListener('click' , () => {
+      console.log('demo');
+    });
+
+    errordemo.addEventListener('click', () => {
+      console.error('demo');
+    });
+    
+    table.addEventListener('click', () => {
+      console.table(["apples", "oranges", "bananas"]);
+    });
+
+        
+    dir.addEventListener('click', () => {
+      console.dir(document.location);
+    });
+
+    dirxml.addEventListener('click', () => {
+      console.dirxml(document.location);
+    });
+
+    dirxml.addEventListener('click', () => {
+      console.dirxml(document.location);
+    });
+
+    gstart.addEventListener('click', () => {
+      console.group();
+      console.log("potatoes");
+      console.log("tomatoes");
+
+    });
+
+    gend.addEventListener('click', () => {
+      console.groupEnd();
+    });
+
+    stimer.addEventListener('click', () => {
+      console.time("Pomodoro");
+
+    });
+
+    etimer.addEventListener('click', () => {
+
+      console.timeEnd("Pomodoro");
+    });
+    
+
+    trace.addEventListener('click', () => {
+
+      console.trace();
+    });
+
+  class myError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "Angel's custom Error"; 
+  }
+}
+
+function test() { //Call test function to throw custom error
+  throw new myError("Never gonna give you up");
+}
+
+    try {
+      let jsonData = require('./ACTUALLYTRIEDTHISFORMYPROJECTSOITSNOTTHATOBVIOUSTOME.json');
+    } catch (error) {
+    console.error(error);
+  }
+  finally{
+    console.log("finally");
+
+  }
+
+  
+  window.onerror = function (msg, url, lineNo, columnNo, error) {
+  var string = msg.toLowerCase();
+  var substring = "script error";
+  if (string.indexOf(substring) > -1){
+    alert('Script Error: See Browser Console for Detail');
+  } else {
+    var message = [
+      'Message: ' + msg,
+      'URL: ' + url,
+      'Line: ' + lineNo,
+      'Column: ' + columnNo,
+      'Error object: ' + JSON.stringify(error)
+    ].join(' - ');
+
+    alert(message);
+  }
+
+  return false;
+};
+
+
   </script>
 </body>
 </html>
